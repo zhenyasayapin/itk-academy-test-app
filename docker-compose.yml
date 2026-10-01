@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  wallet-service:
+    build:
+      context: ./wallet-service/
+      dockerfile: wallet-service.dockerfile
+    restart: "always"
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - "8080:8080"
+
+  postgres:
+    image: postgres:14.2
+    ports:
+      - "5433:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: itk-academy-test-app
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
