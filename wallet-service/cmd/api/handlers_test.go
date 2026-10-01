@@ -80,7 +80,7 @@ func TestUpdateWallet(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			req, err := http.NewRequest(http.MethodPost, "/wallet", bytes.NewBufferString(tt.payload))
+			req, err := http.NewRequest(http.MethodPost, "/api/v1/wallet", bytes.NewBufferString(tt.payload))
 			if err != nil {
 				t.Fatal(err)
 			}

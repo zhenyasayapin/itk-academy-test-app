@@ -9,7 +9,7 @@ import (
 func (app *Config) routes() http.Handler {
 	mux := chi.NewRouter()
 
-	mux.Post("/wallet", app.UpdateWallet)
+	mux.Post("/api/v1/wallet", app.UpdateWallet)
 
 	return mux
 }
