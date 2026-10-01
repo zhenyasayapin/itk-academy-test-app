@@ -12,7 +12,9 @@ services:
       - "8080:8080"
     env_file:
       - config.env
-
+    depends_on:
+      - postgres
+      
   postgres:
     image: postgres:14.2
     ports:
@@ -21,9 +23,7 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: itk-academy-test-app
+    env_file:
+      - config.env
     volumes:
       - ./data/postgres:/var/lib/postgresql/data

@@ -26,3 +26,5 @@ migrate:
 	@echo "Applying migrations..."	
 	cd ./wallet-service && soda migrate
 	@echo "Done!"
+fixtures:
+	docker compose exec -T postgres psql -U postgres -d itk-academy-test-app < ./wallet-service/sql/wallets.sql

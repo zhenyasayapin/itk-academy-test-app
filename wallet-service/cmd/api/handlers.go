@@ -2,9 +2,11 @@ package main
 
 import (
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/google/uuid"
 )
 
 type JsonResponse struct {
@@ -14,9 +16,9 @@ type JsonResponse struct {
 }
 
 type UpdateWalletRequest struct {
-	WalletID      string `json:"wallet_id" validate:"required,uuid"`
-	Amount        float32 `json:"amount" validate:"required,gte=0"`
-	OperationType string `json:"operation_type" validate:"required,oneof=DEPOSIT WITHDRAW"`
+	WalletID      uuid.UUID `json:"wallet_id" validate:"required,uuid"`
+	Amount        float32   `json:"amount" validate:"required,gte=0"`
+	OperationType string    `json:"operation_type" validate:"required,oneof=DEPOSIT WITHDRAW"`
 }
 
 func (app *Config) UpdateWallet(w http.ResponseWriter, r *http.Request) {
@@ -31,6 +33,13 @@ func (app *Config) UpdateWallet(w http.ResponseWriter, r *http.Request) {
 
 	if err := validate.Struct(request); err != nil {
 		app.errorJSON(w, errors.New("Validation error"), http.StatusBadRequest)
+		return
+	}
+
+	_, err = app.DB.GetWallet(request.WalletID)
+	if err != nil {
+		app.errorJSON(w, errors.New("Failed to retrieve the wallet"), http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
