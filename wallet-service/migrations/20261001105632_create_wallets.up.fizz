@@ -1,0 +1,4 @@
+create_table("wallets") {
+  t.Column("id", "uuid", {"primary": true})
+  t.Column("amount", "decimal", {"default": 0})
+}

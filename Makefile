@@ -21,3 +21,8 @@ build_wallet:
 	@echo "Building wallet binary..."
 	cd ./wallet-service && env GOOS=linux CGO_ENABLED=0 go build -o ${WALLET_BINARY_BINARY} ./cmd/api
 	@echo "Done!"
+
+migrate:
+	@echo "Applying migrations..."	
+	cd ./wallet-service && soda migrate
+	@echo "Done!"

@@ -1,0 +1,10 @@
+development:
+  dialect: postgres
+  database: itk-academy-test-app
+  host: localhost
+  port: 5433
+  user: postgres
+  password: password
+  pool: 5
+  idle_pool: 5
+  url: ""
