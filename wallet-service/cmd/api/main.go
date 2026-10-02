@@ -5,12 +5,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"wallet-service/internal/repository"
 )
 
 type Config struct {
 	Port string
 	DSN  string
-	DB   DatabaseRepo
+	DB   repository.DatabaseRepo
 }
 
 func main() {
@@ -39,7 +41,7 @@ func createConfig() (*Config, error) {
 		return nil, err
 	}
 
-	app.DB = &PostgresDBRepo{DB: conn}
+	app.DB = &repository.PostgresDBRepo{DB: conn}
 
 	return &app, nil
 }

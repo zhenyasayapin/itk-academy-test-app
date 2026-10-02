@@ -1,23 +1,24 @@
-package main
+package repository
 
 import (
 	"sync"
 
 	"github.com/google/uuid"
+	"wallet-service/internal/model"
 )
 
 type MockDBRepo struct {
 	mu      sync.Mutex
-	Wallets map[uuid.UUID]*Wallet
+	Wallets map[uuid.UUID]*model.Wallet
 }
 
 func NewMockDBRepo() *MockDBRepo {
 	return &MockDBRepo{
-		Wallets: make(map[uuid.UUID]*Wallet),
+		Wallets: make(map[uuid.UUID]*model.Wallet),
 	}
 }
 
-func (m *MockDBRepo) GetWallet(id uuid.UUID) (*Wallet, error) {
+func (m *MockDBRepo) GetWallet(id uuid.UUID) (*model.Wallet, error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 

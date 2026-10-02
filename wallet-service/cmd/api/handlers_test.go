@@ -8,6 +8,8 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"wallet-service/internal/model"
+	"wallet-service/internal/repository"
 )
 
 func TestUpdateWalletValidation(t *testing.T) {
@@ -116,8 +118,8 @@ func TestUpdateWalletWithRepository(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			mockRepo := NewMockDBRepo()
-			mockRepo.Wallets[walletID] = &Wallet{ID: walletID, Amount: tt.walletAmount}
+			mockRepo := repository.NewMockDBRepo()
+			mockRepo.Wallets[walletID] = &model.Wallet{ID: walletID, Amount: tt.walletAmount}
 
 			app := &Config{DB: mockRepo}
 			mux := app.routes()
@@ -174,9 +176,9 @@ func TestGetWallet(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			mockRepo := NewMockDBRepo()
+			mockRepo := repository.NewMockDBRepo()
 			if tt.name == "Valid wallet retrieval" {
-				mockRepo.Wallets[walletID] = &Wallet{ID: walletID, Amount: 100.5}
+				mockRepo.Wallets[walletID] = &model.Wallet{ID: walletID, Amount: 100.5}
 			}
 
 			app := &Config{DB: mockRepo}

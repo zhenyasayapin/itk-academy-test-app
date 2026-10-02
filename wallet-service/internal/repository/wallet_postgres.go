@@ -1,4 +1,4 @@
-package main
+package repository
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"wallet-service/internal/model"
 )
 
 const dbTimeout = time.Second * 3
@@ -18,7 +19,7 @@ func (m *PostgresDBRepo) Connection() interface{} {
 	return m.DB
 }
 
-func (m *PostgresDBRepo) GetWallet(id uuid.UUID) (*Wallet, error) {
+func (m *PostgresDBRepo) GetWallet(id uuid.UUID) (*model.Wallet, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -30,7 +31,7 @@ func (m *PostgresDBRepo) GetWallet(id uuid.UUID) (*Wallet, error) {
 		where 
 		    w.id = $1`
 
-	var wallet Wallet
+	var wallet model.Wallet
 	row := m.DB.QueryRowContext(ctx, query, id)
 
 	err := row.Scan(
