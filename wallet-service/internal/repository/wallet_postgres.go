@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -55,8 +56,21 @@ func (m *PostgresDBRepo) Deposit(id uuid.UUID, amount float32) error {
 		set amount = amount + $1
 		where id = $2`
 
-	_, err := m.DB.ExecContext(ctx, query, amount, id)
-	return err
+	result, err := m.DB.ExecContext(ctx, query, amount, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("Failed to update wallet")
+	}
+
+	return nil
 }
 
 func (m *PostgresDBRepo) Withdraw(id uuid.UUID, amount float32) error {
@@ -68,6 +82,19 @@ func (m *PostgresDBRepo) Withdraw(id uuid.UUID, amount float32) error {
 		set amount = amount - $1
 		where id = $2`
 
-	_, err := m.DB.ExecContext(ctx, query, amount, id)
-	return err
+	result, err := m.DB.ExecContext(ctx, query, amount, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("Failed to update wallet")
+	}
+
+	return nil
 }
