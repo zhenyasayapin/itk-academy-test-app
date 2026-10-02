@@ -31,3 +31,6 @@ fixtures:
 
 benchmark:
 	@wrk -t10 -c100 -d10s --latency -s ./post_wallet.lua http://localhost:8080/api/v1/wallet
+
+test:
+	cd ./wallet-service/cmd/api && go test -v
