@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 )
@@ -71,4 +72,32 @@ func (app *Config) UpdateWallet(w http.ResponseWriter, r *http.Request) {
 	response.Message = "The wallet was updated successfully!"
 
 	app.writeJSON(w, http.StatusOK, response)
+}
+
+func (app *Config) GetWallet(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	uuid, err := uuid.Parse(id)
+	if err != nil {
+		app.errorJSON(w, errors.New("Invalid UUID"), http.StatusBadRequest)
+		return
+	}
+
+	wallet, err := app.DB.GetWallet(uuid)
+	if err != nil {
+		app.errorJSON(w, errors.New("Failed to retrieve the wallet"), http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
+
+	if wallet == nil {
+		app.errorJSON(w, errors.New("Wallet not found"), http.StatusNotFound)
+		return
+	}
+
+	app.writeJSON(w, http.StatusOK, JsonResponse{
+		Error:   false,
+		Data:    wallet,
+		Message: "Wallet was retrieved successful",
+	})
 }

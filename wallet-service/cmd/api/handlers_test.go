@@ -151,3 +151,48 @@ func TestUpdateWalletWithRepository(t *testing.T) {
 		})
 	}
 }
+
+func TestGetWallet(t *testing.T) {
+	walletID := uuid.MustParse("123e4567-e89b-12d3-a456-426614174000")
+
+	tests := []struct {
+		name       string
+		walletID   uuid.UUID
+		statusCode int
+	}{
+		{
+			name:       "Valid wallet retrieval",
+			walletID:   walletID,
+			statusCode: http.StatusOK,
+		},
+		{
+			name:       "Non-existent wallet",
+			walletID:   uuid.MustParse("999e4567-e89b-12d3-a456-426614174000"),
+			statusCode: http.StatusNotFound,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockRepo := NewMockDBRepo()
+			if tt.name == "Valid wallet retrieval" {
+				mockRepo.Wallets[walletID] = &Wallet{ID: walletID, Amount: 100.5}
+			}
+
+			app := &Config{DB: mockRepo}
+			mux := app.routes()
+
+			req, err := http.NewRequest(http.MethodGet, "/api/v1/wallet/"+tt.walletID.String(), nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			rr := httptest.NewRecorder()
+			mux.ServeHTTP(rr, req)
+
+			if rr.Code != tt.statusCode {
+				t.Errorf("expected status %d, got %d", tt.statusCode, rr.Code)
+			}
+		})
+	}
+}
