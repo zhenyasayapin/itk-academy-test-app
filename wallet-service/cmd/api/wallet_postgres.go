@@ -14,7 +14,7 @@ type PostgresDBRepo struct {
 	DB *sql.DB
 }
 
-func (m *PostgresDBRepo) Connection() *sql.DB {
+func (m *PostgresDBRepo) Connection() interface{} {
 	return m.DB
 }
 
@@ -43,4 +43,30 @@ func (m *PostgresDBRepo) GetWallet(id uuid.UUID) (*Wallet, error) {
 	}
 
 	return &wallet, nil
+}
+
+func (m *PostgresDBRepo) Deposit(id uuid.UUID, amount float32) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `
+		update wallets
+		set amount = amount + $1
+		where id = $2`
+
+	_, err := m.DB.ExecContext(ctx, query, amount, id)
+	return err
+}
+
+func (m *PostgresDBRepo) Withdraw(id uuid.UUID, amount float32) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `
+		update wallets
+		set amount = amount - $1
+		where id = $2`
+
+	_, err := m.DB.ExecContext(ctx, query, amount, id)
+	return err
 }

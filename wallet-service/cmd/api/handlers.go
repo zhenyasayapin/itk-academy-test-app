@@ -9,6 +9,11 @@ import (
 	"github.com/google/uuid"
 )
 
+const (
+	OperationDeposit  = "DEPOSIT"
+	OperationWithdraw = "WITHDRAW"
+)
+
 type JsonResponse struct {
 	Error   bool   `json:"error"`
 	Message string `json:"message"`
@@ -36,9 +41,27 @@ func (app *Config) UpdateWallet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = app.DB.GetWallet(request.WalletID)
+	wallet, err := app.DB.GetWallet(request.WalletID)
 	if err != nil {
 		app.errorJSON(w, errors.New("Failed to retrieve the wallet"), http.StatusBadRequest)
+		log.Println(err)
+		return
+	}
+
+	switch request.OperationType {
+	case OperationDeposit:
+		err = app.DB.Deposit(request.WalletID, request.Amount)
+	case OperationWithdraw:
+		if wallet.Amount-request.Amount <= 0 {
+			app.errorJSON(w, errors.New("Insufficient funds"), http.StatusBadRequest)
+			return
+		} else {
+			err = app.DB.Withdraw(request.WalletID, request.Amount)
+		}
+	}
+
+	if err != nil {
+		app.errorJSON(w, errors.New("Failed to update wallet"), http.StatusBadRequest)
 		log.Println(err)
 		return
 	}
