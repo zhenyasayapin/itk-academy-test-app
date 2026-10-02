@@ -28,3 +28,6 @@ migrate:
 	@echo "Done!"
 fixtures:
 	docker compose exec -T postgres psql -U postgres -d itk-academy-test-app < ./wallet-service/sql/wallets.sql
+
+benchmark:
+	@wrk -t10 -c100 -d10s --latency -s ./post_wallet.lua http://localhost:8080/api/v1/wallet
