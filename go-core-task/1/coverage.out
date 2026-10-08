@@ -1,0 +1,9 @@
+mode: set
+gocoretask/1/main_1.go:21.13,22.25 1 1
+gocoretask/1/main_1.go:22.25,24.3 1 1
+gocoretask/1/main_1.go:26.2,30.35 4 1
+gocoretask/1/main_1.go:33.32,35.2 1 1
+gocoretask/1/main_1.go:37.33,40.25 2 1
+gocoretask/1/main_1.go:40.25,42.3 1 1
+gocoretask/1/main_1.go:44.2,44.33 1 1
+gocoretask/1/main_1.go:47.38,57.2 7 1
