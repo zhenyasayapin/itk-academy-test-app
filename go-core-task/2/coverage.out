@@ -1,0 +1,14 @@
+mode: set
+gocoretask/2/main_2.go:9.13,18.2 7 1
+gocoretask/2/main_2.go:20.34,23.22 2 1
+gocoretask/2/main_2.go:23.22,24.15 1 1
+gocoretask/2/main_2.go:24.15,26.4 1 1
+gocoretask/2/main_2.go:29.2,29.17 1 1
+gocoretask/2/main_2.go:32.39,34.2 1 1
+gocoretask/2/main_2.go:36.31,38.2 1 1
+gocoretask/2/main_2.go:40.42,41.26 1 1
+gocoretask/2/main_2.go:41.26,43.3 1 1
+gocoretask/2/main_2.go:45.2,47.42 2 1
+gocoretask/2/main_2.go:50.23,52.15 2 1
+gocoretask/2/main_2.go:52.15,54.3 1 1
+gocoretask/2/main_2.go:56.2,56.22 1 1
