@@ -1,0 +1,7 @@
+mode: set
+gocoretask/9/main_9.go:10.57,11.6 1 1
+gocoretask/9/main_9.go:11.6,13.10 2 1
+gocoretask/9/main_9.go:13.10,15.4 1 1
+gocoretask/9/main_9.go:17.3,17.41 1 1
+gocoretask/9/main_9.go:21.13,30.15 6 0
+gocoretask/9/main_9.go:30.15,34.3 3 0
